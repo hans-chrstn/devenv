@@ -3,7 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-
   };
 
   outputs = {
@@ -30,7 +29,6 @@
           meson
           ninja
           cppcheck
-          clang-tools
           codespell
           conan
           doxygen
@@ -39,6 +37,7 @@
           vcpkg
           vcpkg-tool
           cargo
+          clang-tools_18
         ];
         cpp-libs = with pkgs; [
           gcc
@@ -68,6 +67,12 @@
         ];
       in
     { 
+      python = pkgs.mkShell {
+        buildInputs = with pkgs; [ python313 ];
+        nativeBuildInputs = [];
+        shellHook = shell;
+      };
+      
       cpp = pkgs.mkShell {
         buildInputs = cpp-libs;
 
@@ -75,17 +80,41 @@
         shellHook = shell;
       };
 
-      opengl = pkgs.mkShell {
-        buildInputs = cpp-libs ++ (with pkgs; [
-          libGL
-          glfw
-          glfw-wayland
-          glew
-          mesa
-          glm
-        ]); 
-        nativeBuildInputs = cpp;
-        shellHook = shell;
+      opengl = let 
+          libs = cpp-libs ++ (with pkgs; [
+            libGL
+            glfw
+            glew
+            mesa
+            glm
+            llvmPackages_latest.libcxx
+            llvmPackages_latest.llvm
+            llvmPackages_latest.libcxxClang
+            llvmPackages_latest.libcxxStdenv
+          ]);
+        in
+        pkgs.mkShell {
+          buildInputs = libs;
+          nativeBuildInputs = with pkgs; [
+            bear
+            cmake
+            meson
+            ninja
+            cppcheck
+            codespell
+            conan
+            doxygen
+            gtest
+            lcov
+            vcpkg
+            vcpkg-tool
+            cargo
+            llvmPackages_latest.clang-tools
+          ]; 
+          shellHook = ''
+            ${shell}
+          '';
+          LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath libs;
       };
 
       vulkan = pkgs.mkShell {
@@ -123,16 +152,16 @@
         shellHook = shell;
       };
 
-      fabric =
-        let 
+      fabric = let 
           libs = minecraft-lib ++ (with pkgs; [
             kotlin
             jetbrains.jdk
           ]);
-        in pkgs.mkShell {
+        in 
+        pkgs.mkShell {
         buildInputs = libs;
         nativeBuildInputs = mc-modding-tools;
-        LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath libs;
+        LD_LIBRARY_PATH = pkgs.lib.strings.makeLibraryPath libs;
         shellHook = ''
           ${shell}
           alias ii="idea-community"
