@@ -182,7 +182,10 @@
           qt6.full
        ];
 
-       shellHook = shell;
+        shellHook = ''
+          ${shell}
+          export QT_QPA_PLATFORM=wayland
+        '';
       };
     });
   };
