@@ -115,6 +115,7 @@
             ${shell}
           '';
           LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath libs;
+          CLANGD_PATH = "${pkgs.llvmPackages_latest.clang-tools}/bin/clangd";
       };
 
       vulkan = pkgs.mkShell {
@@ -143,13 +144,19 @@
         shellHook = shell;
       };
       
-      gtk = pkgs.mkShell {
-        buildInputs = cpp-libs ++ (with pkgs; [
+      gtk = let
+        libs = cpp-libs ++ (with pkgs; [
           gtkmm4
+          gtk4
         ]);
-
+      in pkgs.mkShell {
+        buildInputs = libs;
         nativeBuildInputs = cpp;
-        shellHook = shell;
+        shellHook = ''
+          ${shell}
+        '';
+        LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath libs;
+        CLANGD_PATH = "${pkgs.llvmPackages_latest.clang-tools}/bin/clangd";
       };
 
       fabric = let 
