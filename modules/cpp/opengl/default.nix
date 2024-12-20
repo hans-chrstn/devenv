@@ -2,10 +2,8 @@
 let
   libs = with pkgs; [
     libGL
-    glfw
     glew
     mesa
-    glm
     llvmPackages_latest.libcxx
     llvmPackages_latest.llvm
     llvmPackages_latest.libcxxClang
@@ -13,6 +11,8 @@ let
     gcc
     pkg-config
     gdb
+    glfw-wayland
+    glm
   ];
 in
 pkgs.mkShell {

@@ -12,7 +12,7 @@ let
     kotlin
     jetbrains.jdk
   ];
-in 
+in
 pkgs.mkShell {
   buildInputs = libs;
   nativeBuildInputs = with pkgs; [
