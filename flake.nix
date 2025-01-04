@@ -47,6 +47,8 @@
       bevy = import ./modules/rust/bevy {inherit pkgs;};
 
       vulkano = import ./modules/rust/vulkano {inherit pkgs;};
+
+      rust-gtk = import ./modules/rust/gtk {inherit pkgs;};
     });
   };
 }
