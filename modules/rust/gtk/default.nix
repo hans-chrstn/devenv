@@ -1,19 +1,18 @@
 { pkgs }:
 
+let
+  rustShell = import ../default.nix {inherit pkgs;};
+in 
+
 pkgs.mkShell rec {
-  buildInputs = with pkgs; [
-    rust-bin.stable.latest.default
+  buildInputs = rustShell.buildInputs ++ (with pkgs; [
     gtk4
     gobject-introspection
     glib
-    pkg-config
-  ];
+  ]);
 
-  nativeBuildInputs = buildInputs;
+  nativeBuildInputs = rustShell.nativeBuildInputs ++ (with pkgs; [
+  ]);
 
   LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
-
-  shellHook = ''
-    export ZSTD_SYS_USE_PKG_CONFIG="true";
-  '';
 }

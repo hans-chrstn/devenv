@@ -1,31 +1,24 @@
 { pkgs }:
 
-pkgs.mkShell rec {
-  buildInputs = with pkgs; [
-    alsa-lib
-    libxkbcommon
-    zstd
-    wayland
-    vulkan-loader
-    wayland-protocols
-    libGL
-    xorg.libX11
-    xorg.libXcursor
-    xorg.libXi
-    xorg.libXrandr
-    udev
-    rust-bin.stable.latest.default
-  ];
+let
+  rustShell = import ../default.nix {inherit pkgs; };
+in
 
-  nativeBuildInputs = with pkgs; [
-    pkg-config
-    lldb
+pkgs.mkShell rec {
+  buildInputs = rustShell.buildInputs ++ (with pkgs; [
+    udev
+    alsa-lib-with-plugins
+    vulkan-loader
+    libxkbcommon
+    wayland
+  ]);
+
+  nativeBuildInputs = rustShell.nativeBuildInputs ++ (with pkgs; [
     aseprite
-  ];
+  ]);
 
   LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
 
   shellHook = ''
-    export ZSTD_SYS_USE_PKG_CONFIG="true";
   '';
 }

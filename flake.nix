@@ -40,14 +40,13 @@
       gtk = import ./modules/cpp/gtk {inherit pkgs;};
       llama = import ./modules/cpp/llama {inherit pkgs;};
 
+      java = import ./modules/java {inherit pkgs;};
       fabric = import ./modules/java/fabric {inherit pkgs;};
 
+      rust = import ./modules/rust {inherit pkgs;};
       tauri = import ./modules/web/tauri {inherit pkgs;};
-
       bevy = import ./modules/rust/bevy {inherit pkgs;};
-
       vulkano = import ./modules/rust/vulkano {inherit pkgs;};
-
       rust-gtk = import ./modules/rust/gtk {inherit pkgs;};
     });
   };
