@@ -9,6 +9,10 @@ pkgs.mkShell rec {
     udev
     alsa-lib-with-plugins
     vulkan-loader
+    xorg.libX11
+    xorg.libXcursor
+    xorg.libXi
+    xorg.libXrandr
     libxkbcommon
     wayland
   ]);
