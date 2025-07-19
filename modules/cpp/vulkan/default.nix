@@ -3,14 +3,10 @@
 pkgs.mkShell {
   buildInputs = with pkgs; [
     libGL
-    SDL2
-    SDL2_ttf
-    SDL2_mixer
-    SDL2_image
-    SDL2_sound
-    SDL2_gfx
-    SDL2_net
     glslang
+    glfw-wayland
+    glm
+    shaderc
     mesa
     renderdoc
     spirv-tools

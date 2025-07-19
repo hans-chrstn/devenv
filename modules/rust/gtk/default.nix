@@ -9,6 +9,10 @@ pkgs.mkShell rec {
     gtk4
     gobject-introspection
     glib
+    pango
+    glib
+    gdk-pixbuf
+    gtk4-layer-shell
   ]);
 
   nativeBuildInputs = rustShell.nativeBuildInputs ++ (with pkgs; [
