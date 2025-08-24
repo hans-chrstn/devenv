@@ -4,6 +4,7 @@ let
   libs = with pkgs; [
     gtkmm4
     gtk4
+    gtk4-layer-shell
     llvmPackages_latest.libcxx
     llvmPackages_latest.llvm
     llvmPackages_latest.libcxxClang
