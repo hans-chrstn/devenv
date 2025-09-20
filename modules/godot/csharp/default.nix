@@ -6,12 +6,12 @@ let
   ];
   godotShell = import ../default.nix {inherit pkgs; };
 in
-pkgs.mkShell {
+pkgs.mkShell rec {
   buildInputs = godotShell.buildInputs ++ libs;
   nativeBuildInputs = godotShell.nativeBuildInputs ++ (with pkgs; [
   ]);
-  LD_LIBRARY_PATH = pkgs.lib.strings.makeLibraryPath libs;
-  DOTNET_ROOT = "";
+  LD_LIBRARY_PATH = pkgs.lib.strings.makeLibraryPath buildInputs;
+  DOTNET_ROOT = "${pkgs.dotnet-sdk_9}";
   shellHook = ''
   '';
 }

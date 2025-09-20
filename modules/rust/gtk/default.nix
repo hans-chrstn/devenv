@@ -13,6 +13,7 @@ pkgs.mkShell rec {
     glib
     gdk-pixbuf
     gtk4-layer-shell
+    luajit
   ]);
 
   nativeBuildInputs = rustShell.nativeBuildInputs ++ (with pkgs; [
