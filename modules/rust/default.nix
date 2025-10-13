@@ -6,6 +6,7 @@ pkgs.mkShell rec {
     alsa-lib-with-plugins
     pipewire
     rust-analyzer
+    openssl
   ];
 
   nativeBuildInputs = with pkgs; [
