@@ -8,8 +8,10 @@ let
 in
 pkgs.mkShell rec {
   buildInputs = godotShell.buildInputs ++ libs;
-  nativeBuildInputs = godotShell.nativeBuildInputs ++ (with pkgs; [
-  ]);
+  nativeBuildInputs = with pkgs; [
+    aseprite
+    godot-mono
+  ];
   LD_LIBRARY_PATH = pkgs.lib.strings.makeLibraryPath buildInputs;
   DOTNET_ROOT = "${pkgs.dotnet-sdk_9}";
   shellHook = ''

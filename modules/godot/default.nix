@@ -7,13 +7,13 @@ in
 pkgs.mkShell {
   buildInputs = libs;
   nativeBuildInputs = with pkgs; [
-    godot-mono
+    godot
     aseprite
   ];
   LD_LIBRARY_PATH = pkgs.lib.strings.makeLibraryPath libs;
-  GODOT_FILE = "${pkgs.godot-mono}";
+  GODOT_FILE = "${pkgs.godot}";
   shellHook = ''
-      echo "To run godot with editor, do godot-mono -e"
+      echo "To run godot with editor, do godot -e"
       echo "To run aseprite, do aseprite"
       echo "To run VSCode, do code"
   '';
