@@ -21,15 +21,19 @@
       "aarch64-darwin"
       "x86_64-darwin"
     ];
-    forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f {
-      pkgs = let
-        overlays = [ (import rust-overlay) ];
-      in
-        import nixpkgs { inherit system overlays; config = { allowUnfree = true; }; };
-    });
+    forAllSystems = f:
+      nixpkgs.lib.genAttrs systems (system:
+        f {
+          pkgs = let
+            overlays = [(import rust-overlay)];
+          in
+            import nixpkgs {
+              inherit system overlays;
+              config = {allowUnfree = true;};
+            };
+        });
   in {
-
-    devShells = forAllSystems ({ pkgs }: {
+    devShells = forAllSystems ({pkgs}: {
       python = import ./modules/python {inherit pkgs;};
       qt = import ./modules/python/qt {inherit pkgs;};
 
@@ -41,7 +45,9 @@
       llama = import ./modules/cpp/llama {inherit pkgs;};
 
       java = import ./modules/java {inherit pkgs;};
-      fabric = import ./modules/java/fabric {inherit pkgs;};
+      minecraft = import ./modules/java/minecraft {inherit pkgs;};
+
+      lua = import ./modules/lua {inherit pkgs;};
 
       rust = import ./modules/rust {inherit pkgs;};
       tauri = import ./modules/web/tauri {inherit pkgs;};

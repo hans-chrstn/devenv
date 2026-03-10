@@ -1,5 +1,4 @@
-{ pkgs }:
-
+{pkgs}:
 pkgs.mkShell {
   buildInputs = with pkgs; [
     gcc
@@ -20,6 +19,6 @@ pkgs.mkShell {
     vcpkg
     vcpkg-tool
     cargo
-    clang-tools_18
+    clang-tools_19
   ];
 }
