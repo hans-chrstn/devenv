@@ -1,48 +1,40 @@
-{pkgs}:
-pkgs.mkShell {
-  buildInputs = with pkgs; [
-    libGL
-    glslang
-    glfw-wayland
-    glm
-    shaderc
-    mesa
-    renderdoc
-    spirv-tools
-    vulkan-volk
-    vulkan-tools
-    vulkan-loader
-    vulkan-headers
-    vulkan-validation-layers
-    vulkan-tools-lunarg
-    vulkan-extension-layer
-    stb
-    gcc
-    pkg-config
-    gdb
-    tinyobjloader
-  ];
-  nativeBuildInputs = with pkgs; [
-    cmake
-    clang
-    meson
-    ninja
-    cppcheck
-    codespell
-    conan
-    doxygen
-    gtest
-    lcov
-    vcpkg
-    vcpkg-tool
-    cargo
-    clang-tools_18
-  ];
-
-  shellHook = ''
-    export VK_LAYER_PATH="${pkgs.vulkan-validation-layers}/share/vulkan/explicit_layer.d"
-    echo "${pkgs.vulkan-validation-layers}"
-    export XDG_DATA_DIRS="$GSETTINGS_SCHEMAS_PATH:$XDG_DATA_DIRS"
-    echo $XDG_DATA_DIRS
-  '';
-}
+{pkgs}: let
+  cpp = import ../default.nix {inherit pkgs;};
+in
+  pkgs.mkShell.override rec {stdenv = pkgs.clangStdenv;} {
+    buildInputs =
+      cpp.buildInputs
+      ++ (with pkgs; [
+        libGL
+        glslang
+        glfw-wayland
+        glm
+        shaderc
+        mesa
+        renderdoc
+        spirv-tools
+        vulkan-volk
+        vulkan-tools
+        vulkan-loader
+        vulkan-headers
+        vulkan-validation-layers
+        vulkan-tools-lunarg
+        vulkan-extension-layer
+        stb
+        tinyobjloader
+        llvmPackages_latest.lldb
+        llvmPackages_latest.libstdcxxClang
+        llvmPackages_latest.libllvm
+        llvmPackages_latest.libcxx
+        valgrind
+        clang
+        tinyobjloader
+        stb
+        freetype
+      ]);
+    nativeBuildInputs = cpp.nativeBuildInputs ++ (with pkgs; []);
+    shellHook = ''${cpp.shellHook}'';
+    LD_LIBRARY_PATH = "${pkgs.glfw-wayland}/lib:${pkgs.vulkan-loader}/lib:${pkgs.vulkan-validation-layers}/lib";
+    VULKAN_SDK = "${pkgs.vulkan-headers}";
+    VK_LAYER_PATH = "${pkgs.vulkan-validation-layers}/share/vulkan/explicit_layer.d";
+  }

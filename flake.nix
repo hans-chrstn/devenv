@@ -42,7 +42,6 @@
       opengl = import ./modules/cpp/opengl {inherit pkgs;};
       vulkan = import ./modules/cpp/vulkan {inherit pkgs;};
       gtk = import ./modules/cpp/gtk {inherit pkgs;};
-      llama = import ./modules/cpp/llama {inherit pkgs;};
 
       java = import ./modules/java {inherit pkgs;};
       minecraft = import ./modules/java/minecraft {inherit pkgs;};

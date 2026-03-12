@@ -1,39 +1,19 @@
-{ pkgs }:
-let
-  libs = with pkgs; [
-    libGL
-    glew
-    mesa
-    llvmPackages_latest.libcxx
-    llvmPackages_latest.llvm
-    llvmPackages_latest.libcxxClang
-    llvmPackages_latest.libcxxStdenv
-    gcc
-    pkg-config
-    gdb
-    glfw-wayland
-    glm
-  ];
+{pkgs}: let
+  cpp = import ../default.nix {inherit pkgs;};
 in
-pkgs.mkShell {
-  buildInputs = libs;
-  nativeBuildInputs = with pkgs; [
-    bear
-    cmake
-    meson
-    ninja
-    cppcheck
-    codespell
-    conan
-    doxygen
-    gtest
-    lcov
-    vcpkg
-    vcpkg-tool
-    cargo
-    llvmPackages_latest.clang-tools
-  ];
-  LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath libs;
-  CLANGD_PATH = "${pkgs.llvmPackages_latest.clang-tools}/bin/clangd";
-}
-
+  pkgs.mkShell.override rec {stdenv = pkgs.clangStdenv;} {
+    buildInputs =
+      cpp.buildInputs
+      ++ (with pkgs; [
+        libGL
+        glew
+        mesa
+        glfw-wayland
+        glm
+      ]);
+    nativeBuildInputs = cpp.nativeBuildInputs ++ (with pkgs; []);
+    LD_LIBRARY_PATH = "${pkgs.glfw-wayland}/lib:${pkgs.libGL}/lib";
+    shellHook = ''
+      ${cpp.shellHoook}
+    '';
+  }

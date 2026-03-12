@@ -1,16 +1,20 @@
-{ pkgs }:
-
-let
+{pkgs}: let
   rustShell = import ../default.nix {inherit pkgs;};
-in 
+in
+  pkgs.mkShell rec {
+    buildInputs =
+      rustShell.buildInputs
+      ++ (with pkgs; [
+        luajit
+      ]);
 
-pkgs.mkShell rec {
-  buildInputs = rustShell.buildInputs ++ (with pkgs; [
-    luajit
-  ]);
+    nativeBuildInputs =
+      rustShell.nativeBuildInputs
+      ++ (with pkgs; [
+        openssl
+        luajit
+        pkg-config
+      ]);
 
-  nativeBuildInputs = rustShell.nativeBuildInputs ++ (with pkgs; [
-  ]);
-
-  LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
-}
+    LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
+  }
