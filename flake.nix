@@ -58,6 +58,7 @@
 
       godot = import ./modules/godot {inherit pkgs;};
       godot-csharp = import ./modules/godot/csharp {inherit pkgs;};
+      godot-4_5 = import ./modules/godot/godot_4.5 {inherit pkgs;};
 
       unity = import ./modules/unity {inherit pkgs;};
     });
