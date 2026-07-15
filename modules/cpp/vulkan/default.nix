@@ -33,7 +33,9 @@ in
         freetype
       ]);
     nativeBuildInputs = cpp.nativeBuildInputs ++ (with pkgs; []);
-    shellHook = ''${cpp.shellHook}'';
+    shellHook = ''
+      ${cpp.shellHook}
+    '';
     LD_LIBRARY_PATH = "${pkgs.glfw-wayland}/lib:${pkgs.vulkan-loader}/lib:${pkgs.vulkan-validation-layers}/lib";
     VULKAN_SDK = "${pkgs.vulkan-headers}";
     VK_LAYER_PATH = "${pkgs.vulkan-validation-layers}/share/vulkan/explicit_layer.d";

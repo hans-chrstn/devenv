@@ -23,7 +23,9 @@ pkgs.mkShell.override rec {stdenv = pkgs.clangStdenv;} {
     lcov
     vcpkg
     vcpkg-tool
-    clang-tools
+    cargo
+    clang-tools_19
+    pandoc
   ];
   shellHook = ''
     export XDG_DATA_DIRS="$GSETTINGS_SCHEMAS_PATH:$XDG_DATA_DIRS"
