@@ -35,7 +35,8 @@
   in {
     devShells = forAllSystems ({pkgs}: {
       python = import ./modules/python {inherit pkgs;};
-      qt = import ./modules/python/qt {inherit pkgs;};
+      py-plot = import ./modules/python/plot {inherit pkgs;};
+      py-qt = import ./modules/python/qt {inherit pkgs;};
 
       cpp = import ./modules/cpp {inherit pkgs;};
       sdl = import ./modules/cpp/sdl {inherit pkgs;};

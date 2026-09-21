@@ -1,33 +1,38 @@
-{pkgs}:
-pkgs.mkShell.override rec {stdenv = pkgs.clangStdenv;} {
-  buildInputs = with pkgs; [
-    gcc
-    pkg-config
-    gdb
-    llvmPackages_latest.lldb
-    llvmPackages_latest.libstdcxxClang
-    llvmPackages_latest.libllvm
-    llvmPackages_latest.libcxx
-    valgrind
-    clang
-  ];
-  nativeBuildInputs = with pkgs; [
-    cmake
-    meson
-    ninja
-    cppcheck
-    codespell
-    conan
-    doxygen
-    gtest
-    lcov
-    vcpkg
-    vcpkg-tool
-    cargo
-    clang-tools_19
-    pandoc
-  ];
-  shellHook = ''
-    export XDG_DATA_DIRS="$GSETTINGS_SCHEMAS_PATH:$XDG_DATA_DIRS"
-  '';
-}
+{pkgs}: let
+  llvm = pkgs.llvmPackages;
+in
+  pkgs.mkShell.override rec {stdenv = pkgs.clangStdenv;}
+  {
+    buildInputs = [
+      pkgs.gcc
+      pkgs.pkg-config
+      pkgs.gdb
+      llvm.lldb
+      llvm.libstdcxxClang
+      llvm.libllvm
+      llvm.libcxx
+      pkgs.valgrind
+      pkgs.just
+      llvm.clang
+      pkgs.catch2_3
+    ];
+    nativeBuildInputs = [
+      pkgs.cmake
+      pkgs.meson
+      pkgs.ninja
+      pkgs.cppcheck
+      pkgs.codespell
+      pkgs.conan
+      pkgs.doxygen
+      pkgs.gtest
+      pkgs.lcov
+      pkgs.vcpkg
+      pkgs.vcpkg-tool
+      pkgs.cargo
+      llvm.clang-tools
+      pkgs.pandoc
+    ];
+    shellHook = ''
+      export XDG_DATA_DIRS="$GSETTINGS_SCHEMAS_PATH:$XDG_DATA_DIRS"
+    '';
+  }
