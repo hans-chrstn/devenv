@@ -1,5 +1,5 @@
 {pkgs}: let
-  llvm = pkgs.llvmPackages;
+  llvm = pkgs.llvmPackages_23;
 in
   pkgs.mkShell.override rec {stdenv = pkgs.clangStdenv;}
   {
