@@ -20,6 +20,7 @@ in
         vulkan-validation-layers
         vulkan-tools-lunarg
         vulkan-extension-layer
+        vulkan-memory-allocator
         stb
         freetype
       ]);
