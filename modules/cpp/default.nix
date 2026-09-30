@@ -15,6 +15,7 @@ in
       pkgs.just
       llvm.clang
       pkgs.catch2_3
+      pkgs.gtest
     ];
     nativeBuildInputs = [
       pkgs.cmake
